@@ -22,7 +22,7 @@ This Toolset is Needed for below Engine Extensions:[https://byrobingames.github.
 
 ## Main Features
 
-- Install Free Engine Extension inside the Toolset
+- Donwnload/Install Engine Extension inside the Toolset
 - Check for available updates for installed engine extensions.
 - Configurate engine extensions.
 
