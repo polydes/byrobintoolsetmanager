@@ -49,12 +49,12 @@ Select the Engine Extension from the left menu and click on "Download"
 
 ## Submitting a Pull Request
 
-This software is opensource.</br>
+This software is opensource.<br/>
 If you want to contribute you can make a pull request
 
 Repository: [https://github.com/byrobingames/byrobintoolsetmanager](https://github.com/byrobingames/byrobintoolsetmanager)
 
-Need help with a pull request?</br>
+Need help with a pull request?<br/>
 [https://help.github.com/articles/creating-a-pull-request/](https://help.github.com/articles/creating-a-pull-request/)
 
 ## Donate
