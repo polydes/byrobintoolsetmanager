@@ -29,14 +29,14 @@ This Toolset is Needed for below Engine Extensions:[https://byrobingames.github.
 ## How to Install
 
 ### Install Toolset
-1) Download the toolset from: </br>
+1. Download the toolset from:
 [https://github.com/byrobingames/byrobintoolsetmanager/releases](https://github.com/byrobingames/byrobintoolsetmanager/releases)
-2) Copy the zip file into [WORKSPACE]/extensions/
-3) Unzip the zip file, there will be extract a .jar file.
-4) Restart Stencyl, and the extension should be recognized. (Check the Extensions menu to verify its existence)
+2. Copy the zip file into [WORKSPACE]/extensions/
+3. Unzip the zip file, there will be extract a .jar file.
+4. Restart Stencyl, and the extension should be recognized. (Check the Extensions menu to verify its existence)
 
 ### Install Engine extension
-To install a supported Engine Extension, go to the toolset in the Extension menu of your game inside Stencyl.</br>
+To install a supported Engine Extension, go to the toolset in the Extension menu of your game inside Stencyl.<br/>
 Select the Engine Extension from the left menu and click on "Download"
 
 ## Version History
