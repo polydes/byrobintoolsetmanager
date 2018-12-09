@@ -1,4 +1,4 @@
-## Stencyl Toolset Manager
+## Stencyl Toolset byRobin Extension Manager
 
 For Stencyl 3.4 and above
 
