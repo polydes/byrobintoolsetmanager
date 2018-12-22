@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+    
+    <setenv name="TAPDAQ_ENABLED" value="true" />
+    [SETENVTPADCOLONY]
+    [SETENVTPAPPLOVIN]
+    [SETENVTPFACEBOOK]
+    [SETENVTPCHARTBOOST]
+    [SETENVTPHYPRMX]
+    [SETENVTPINMOBI]
+    [SETENVTPIRONSOURCE]
+    [SETENVTPMOPUB]
+    [SETENVTPRECEPTIV]
+    [SETENVTPTAPJOY]
+    [SETENVTPUNITYADS]
+    [SETENVTPVUNGLE]
+
+    
+    <section if="android">
+        [SETNAMETPADCOLONY]
+        [SETNAMETPAPPLOVIN]
+        [SETNAMETPFACEBOOK]
+        [SETNAMETPCHARTBOOST]
+        [SETNAMETPHYPRMX]
+        [SETNAMETPINMOBI]
+        [SETNAMETPIRONSOURCE]
+        [SETNAMETPMOPUB]
+        [SETNAMETPRECEPTIV]
+        [SETNAMETPTAPJOY]
+        [SETNAMETPUNITYADS]
+        [SETNAMETPVUNGLE]
+        
+        <classpath name="src" />
+        
+        <dependency name="tapdaq" path="dependencies/tapdaq" />
+        <dependency name="tpadcolony" path="dependencies/tpadcolony" if="tpadcolony" />
+        <dependency name="tpapplovin" path="dependencies/tpapplovin" if="tpapplovin" />
+        <dependency name="tpaudiencenetwork" path="dependencies/tpaudiencenetwork" if="tpaudiencenetwork" />
+        <dependency name="tpchartboost" path="dependencies/tpchartboost" if="tpchartboost" />
+        <dependency name="tpgson" path="dependencies/tpgson"/>
+        <dependency name="tphyprmx" path="dependencies/tphyprmx" if="tphyprmx" />
+        <dependency name="tpinmobi" path="dependencies/tpinmobi" if="tpinmobi" />
+        <dependency name="tpironsource" path="dependencies/tpironsource" if="tpironsource" />
+        <dependency name="tpmopub" path="dependencies/tpmopub" if="tpmopub" />
+        <dependency name="tpreceptive" path="dependencies/tpreceptive" if="tpreceptive" />
+        <dependency name="tptapjoy" path="dependencies/tptapjoy" if="tptapjoy" />
+        <dependency name="tpunityads" path="dependencies/tpunityads" if="tpunityads" />
+        <dependency name="tpvungle" path="dependencies/tpvungle" if="tpvungle" />
+        <dependency name="google-play-services-gcm" path="dependencies/google-play-services-gcm" if="tpadcolony" />
+        
+        <android extension="com.byrobin.tapdaq.TapdaqEx" />
+        
+    </section>
+    
+    
+	<section if="ios">
+        
+        <echo value='|----------------------------------------------------------------------------|' />
+        <echo value='| Tapdaq: Enable byRobin Extension manager in "Setting->Extension"           |' />
+        <echo value='|----------------------------------------------------------------------------|' />
+        
+        
+		<ndll name="tapdaq" />
+        
+        <!--<dependency path="frameworks/Tapdaq.framework" />-->
+        <dependency name="AVKit.framework" />
+        <dependency name="CoreData.framework" />
+        <dependency name="MediaToolbox.framework" />
+        
+        <template path="templates" />
+        
+        
+	</section>
+    
+</project>
