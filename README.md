@@ -46,6 +46,7 @@ Select the Engine Extension from the left menu and click on "Download"
 - 2017-07-20 (3) Update for Engine Extension Tapdaq 2.2.2
 - 2017-12-02 (4) Login page and Update for Engine Extension Tapdaq 2.2.3
 - 2017-12-07 (5) Update for Engine Extension Applovin 0.0.7 (enable testads)
+- 2018-12-22 (6) No more login page and make all extensions opensource
 
 ## Submitting a Pull Request
 
