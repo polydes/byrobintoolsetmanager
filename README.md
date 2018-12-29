@@ -1,6 +1,6 @@
 ## Stencyl Toolset byRobin Extension Manager
 
-For Stencyl 3.4 and above
+For Stencyl 3.4 and Stencyl 3.5
 
 Stencyl Toolset extension for managing engine extenisons.
 
@@ -35,9 +35,11 @@ This Toolset is Needed for below Engine Extensions:[https://byrobingames.github.
 3. Unzip the zip file, there will be extract a .jar file.
 4. Restart Stencyl, and the extension should be recognized. (Check the Extensions menu to verify its existence)
 
-### Install Engine extension
-To install a supported Engine Extension, go to the toolset in the Extension menu of your game inside Stencyl.<br/>
-Select the Engine Extension from the left menu and click on "Download"
+### Install Engine extensions
+
+To install a Engine Extension, go to the toolset (byRobin Extension Mananger) in the Extension menu of your game inside Stencyl.<br/>
+![toolsetextensionlocation](https://byrobingames.github.io/img/toolset/toolsetextensionlocation.png)<br/>
+Select the Extension from the menu and click on "Download"
 
 ## Version History
 
@@ -47,6 +49,7 @@ Select the Engine Extension from the left menu and click on "Download"
 - 2017-12-02 (4) Login page and Update for Engine Extension Tapdaq 2.2.3
 - 2017-12-07 (5) Update for Engine Extension Applovin 0.0.7 (enable testads)
 - 2018-12-22 (6) No more login page and make all extensions opensource
+- 2018-12-29 (7) Fix download extensions for the first time. - change some text
 
 ## Submitting a Pull Request
 
@@ -57,6 +60,14 @@ Repository: [https://github.com/byrobingames/byrobintoolsetmanager](https://gith
 
 Need help with a pull request?<br/>
 [https://help.github.com/articles/creating-a-pull-request/](https://help.github.com/articles/creating-a-pull-request/)
+
+## ANY ISSUES?
+
+Add the issue on GitHub<br/>
+Repository: [https://github.com/byrobingames/byrobintoolsetmanager/issues](https://github.com/byrobingames/byrobintoolsetmanager/issues)
+
+Need help with creating a issue?<br/>
+[https://help.github.com/articles/creating-an-issue/](https://help.github.com/articles/creating-an-issue/)
 
 ## Donate
 
