@@ -49,7 +49,7 @@ public class UnityAdsPage extends SourcePage implements FieldVerifier{
 		title.setForeground(Theme.TEXT_COLOR);
 		dPanel.addGenericRow(title);
 		
-		JLabel note = new JLabel("<html>Note: Fill in your Game ID from <a href=\"https://unity3d.com/services/ads\">https://unity3d.com/services/ads</a></html>");
+		JLabel note = new JLabel("<html>Note: Fill in your Game ID from <a href=\"https://operate.dashboard.unity3d.com\">https://operate.dashboard.unity3d.com</a></html>");
         note.setFont(SW.get().getFonts().getNormalFont());
 		note.setForeground(Theme.TEXT_COLOR);
 		note.addMouseListener(new MouseAdapter() {

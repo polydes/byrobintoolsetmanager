@@ -44,8 +44,8 @@ public class GeneralPage extends SourcePage implements FieldVerifier {
 				+ "<br><br>"
 				+ "I have make this tool opensource on https://byrobingames.github.io.<br>"
 				+ "Feel free to fork and make a pull request.<br><br>"
-				+ "If you have any suggestion of if you have any question, you can contact me at:<br>"
-				+ "info@byrobin.nl</html>");
+				+ "If you have any suggestion of if you have any issues, you can create an issue on Github:<br>"
+				+ "<a href=\"https://github.com/byrobingames/byRobinextensionmanager/issues\">https://github.com/byrobingames/byRobinextensionmanager/issues</a></html>");
 		titleSettings.setFont(SW.get().getFonts().getNormalFont());
 		titleSettings.setForeground(Theme.TEXT_COLOR);
 		dPanel.addGenericRow(titleSettings);

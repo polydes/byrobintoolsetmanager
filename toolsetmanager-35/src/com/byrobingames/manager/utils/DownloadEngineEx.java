@@ -108,8 +108,10 @@ public final class DownloadEngineEx {
 						t.showProgress("Installing "+ ext_name + "...");
 						
 						try {
-							//FileUtils.deleteDirectory(deleteFolder);
-							FileUtils.cleanDirectory(cleanFolder);
+							if(cleanFolder.exists() && cleanFolder.isDirectory()){
+								//FileUtils.deleteDirectory(cleanFolder);
+								FileUtils.cleanDirectory(cleanFolder);
+							}
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
