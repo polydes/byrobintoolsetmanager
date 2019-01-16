@@ -32,7 +32,7 @@
 	<property name="description" value="Manage byRobin Engine Extension for Stencyl 3.5" />
 	<property name="author" value="Robin Schaafsma" />
 	<property name="website" value="https://byrobingames.github.io" />
-	<property name="internalVersion" value="7" />
+	<property name="internalVersion" value="8" />
 	<property name="version" value="0.0.1" />
 	
 	<!-- Set "repository" if this extension is part of a third-party repository where it can be updated.

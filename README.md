@@ -50,6 +50,7 @@ Select the Extension from the menu and click on "Download"
 - 2017-12-07 (5) Update for Engine Extension Applovin 0.0.7 (enable testads)
 - 2018-12-22 (6) No more login page and make all extensions opensource
 - 2018-12-29 (7) Fix download extensions for the first time. - change some text
+- 2019-01-16 (8) Stop copy files to game when a extension not installed or is disabled.
 
 ## Submitting a Pull Request
 

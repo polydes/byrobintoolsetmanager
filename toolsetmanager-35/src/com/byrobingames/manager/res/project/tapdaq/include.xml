@@ -67,6 +67,8 @@
         <dependency name="CoreData.framework" />
         <dependency name="MediaToolbox.framework" />
         
+        <config:ios allow-insecure-http="tapdaq.com" unless="openfl-legacy || lime-legacy"/>
+        
         <template path="templates" />
         
         

@@ -26,8 +26,6 @@ public class FileWriter {
 	final String sourceDir;
 	final String sourceScriptsDir;
 	
-	final String assetsDataDir;
-	
 	public FileWriter(Game game)
 	{
 		
@@ -35,7 +33,6 @@ public class FileWriter {
 		this.projectDir = Locations.getHXProjectDir(game);
 		this.sourceDir = Locations.getPath(projectDir, "Source");
 		this.sourceScriptsDir = Locations.getPath(sourceDir, "scripts");
-		this.assetsDataDir = Locations.getPath(projectDir, "Assets/data/com.byrobingames.manager");
 	}
 	
 	public void writeByRobinAssets() throws IOException
@@ -142,14 +139,29 @@ public class FileWriter {
 	}
 	
 	public void writeWebViewHTMLFile() throws IOException{
+		
+		if(!DownloadEngineEx.checkEngineEx("webview2.0")){
+			return;
+		}
+		
 		String s = ByRobinGameExtension.WVHTMLCODE;
 		String datafolderlocation = Locations.getExtensionGameDataLocation(game, "com.byrobingames.manager");
 		FileHelper.writeStringToFile(Locations.getPath(datafolderlocation) + "webview.html", s);
+		
+		if(!DownloadEngineEx.checkEngineEx("webview2.0") || !DownloadEngineEx.checkIfEnabled("webview2.0") ){
+			return;
+		}
+		
+		String assetsDataDir = Locations.getPath(projectDir, "Assets/data/com.byrobingames.manager");
 		FileHelper.writeStringToFile(Locations.getPath(assetsDataDir) + "webview.html", s);
 	}
 	
 	public void writeNotifJSONFile() throws IOException
 	{
+		if(!DownloadEngineEx.checkEngineEx("localnotifications")){
+			return;
+		}
+		
 		String datafolderlocation = Locations.getExtensionGameDataLocation(game, "com.byrobingames.manager");
 		
 		JSONArray notifjson = new JSONArray();
@@ -168,6 +180,13 @@ public class FileWriter {
 		
 		FileReader.jsonNotifString = notifjson.toString();
 		FileHelper.writeStringToFile(Locations.getPath(datafolderlocation) + "notif.json", FileReader.jsonNotifString);
+		
+		if(!DownloadEngineEx.checkEngineEx("localnotifications") || !DownloadEngineEx.checkIfEnabled("localnotifications") ){
+			return;
+		}
+		
+		String assetsDataDir = Locations.getPath(projectDir, "Assets/data/com.byrobingames.manager");
+		
 		FileHelper.writeStringToFile(Locations.getPath(assetsDataDir) + "notif.json", FileReader.jsonNotifString);
 	}
 }
