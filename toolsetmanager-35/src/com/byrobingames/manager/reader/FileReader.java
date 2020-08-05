@@ -40,41 +40,48 @@ public class FileReader {
 	
 	public void readWebViewHTMLFile() throws FileNotFoundException, IOException{
 		String datafolderlocation = Locations.getExtensionGameDataLocation(game, "com.byrobingames.manager");
-		ByRobinGameExtension.WVHTMLCODE = FileHelper.readFileToString(new File(datafolderlocation + "webview.html"));
+		File wvFile = new File(datafolderlocation + "webview.html");
+		if(wvFile.exists())
+		{
+			ByRobinGameExtension.WVHTMLCODE = FileHelper.readFileToString(wvFile);
+		}
 	}
 	
 	public void readNotifJSONFile() throws JSONException, FileNotFoundException, IOException
 	{
 		String datafolderlocation = Locations.getExtensionGameDataLocation(game, "com.byrobingames.manager");
-				
-		jsonNotifString = FileHelper.readFileToString(new File(datafolderlocation + "notif.json"));
-		JSONArray a = new JSONArray(jsonNotifString);
 		
-		ArrayList<NotifElement> arraynotif = new ArrayList<NotifElement>();
-		
-		if(a.length() != 0){
-			log.info(a.get(0));
-			for (int i=0; i < a.length(); i++) {
-				JSONArray ja = new JSONArray(a.get(i).toString());
-				
-				log.info(ja.get(0));
-				log.info(ja.get(1));
-				log.info(ja.get(2));
-				log.info(ja.get(3));
-				log.info(ja.get(4));
-				
-				NotifElement ne = new NotifElement();
-				ne.setNotifid(Integer.valueOf(ja.get(0).toString()));
-				ne.setTitle(ja.get(1).toString());
-				ne.setMessage(ja.get(2).toString());
-				ne.setTimeinterval(Integer.valueOf(ja.get(3).toString()));
-				ne.setDoevery(ja.get(4).toString());
-				
-				arraynotif.add(ne);
-	        }
-			ByRobinGameExtension.NOTIFLIST = arraynotif;
+		File notifFile = new File(datafolderlocation + "notif.json");
+		if(notifFile.exists())
+		{
+			jsonNotifString = FileHelper.readFileToString(notifFile);
+			JSONArray a = new JSONArray(jsonNotifString);
+			
+			ArrayList<NotifElement> arraynotif = new ArrayList<NotifElement>();
+			
+			if(a.length() != 0){
+				log.info(a.get(0));
+				for (int i=0; i < a.length(); i++) {
+					JSONArray ja = new JSONArray(a.get(i).toString());
+					
+					log.info(ja.get(0));
+					log.info(ja.get(1));
+					log.info(ja.get(2));
+					log.info(ja.get(3));
+					log.info(ja.get(4));
+					
+					NotifElement ne = new NotifElement();
+					ne.setNotifid(Integer.valueOf(ja.get(0).toString()));
+					ne.setTitle(ja.get(1).toString());
+					ne.setMessage(ja.get(2).toString());
+					ne.setTimeinterval(Integer.valueOf(ja.get(3).toString()));
+					ne.setDoevery(ja.get(4).toString());
+					
+					arraynotif.add(ne);
+		        }
+				ByRobinGameExtension.NOTIFLIST = arraynotif;
+			}
 		}
-		
 	}
 
 }
