@@ -5,15 +5,14 @@ import java.io.IOException;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import com.byrobingames.manager.ByRobinGameExtension;
 import com.byrobingames.manager.editor.NotifElement;
 import com.byrobingames.manager.reader.FileReader;
 import com.byrobingames.manager.res.Resources;
-import com.byrobingames.manager.utils.DownloadEngineEx;
 
 import stencyl.core.lib.Game;
+import stencyl.sw.SW;
 import stencyl.sw.util.FileHelper;
 import stencyl.sw.util.Locations;
 
@@ -82,9 +81,9 @@ public class FileWriter {
 	
 	public void writeAppLovinIncludeFile() throws IOException{
 		String extensionDir = "";
-		if(DownloadEngineEx.checkEngineEx("applovin-master") && !DownloadEngineEx.checkEngineEx("applovin")){
+		if(checkEngineEx("applovin-master") && !checkEngineEx("applovin")){
 			extensionDir = Locations.getGameExtensionsLocation()+"applovin-master";
-		}else if(DownloadEngineEx.checkEngineEx("applovin") && !DownloadEngineEx.checkEngineEx("applovin-master")){
+		}else if(checkEngineEx("applovin") && !checkEngineEx("applovin-master")){
 			extensionDir = Locations.getGameExtensionsLocation()+"applovin";
 		}else{
 			return;
@@ -99,9 +98,9 @@ public class FileWriter {
 	
 	public void writeTapdaqIncludeFile() throws IOException{
 		String extensionDir = "";
-		if(DownloadEngineEx.checkEngineEx("tapdaq-master") && !DownloadEngineEx.checkEngineEx("tapdaq")){
+		if(checkEngineEx("tapdaq-master") && !checkEngineEx("tapdaq")){
 			extensionDir = Locations.getGameExtensionsLocation()+"tapdaq-master";
-		}else if(DownloadEngineEx.checkEngineEx("tapdaq") && !DownloadEngineEx.checkEngineEx("tapdaq-master")){
+		}else if(checkEngineEx("tapdaq") && !checkEngineEx("tapdaq-master")){
 			extensionDir = Locations.getGameExtensionsLocation()+"tapdaq";
 		}else{
 			return;
@@ -140,7 +139,7 @@ public class FileWriter {
 	
 	public void writeWebViewHTMLFile() throws IOException{
 		
-		if(!DownloadEngineEx.checkEngineEx("webview2.0")){
+		if(!checkEngineEx("webview2.0")){
 			return;
 		}
 		
@@ -148,7 +147,7 @@ public class FileWriter {
 		String datafolderlocation = Locations.getExtensionGameDataLocation(game, "com.byrobingames.manager");
 		FileHelper.writeStringToFile(Locations.getPath(datafolderlocation) + "webview.html", s);
 		
-		if(!DownloadEngineEx.checkEngineEx("webview2.0") || !DownloadEngineEx.checkIfEnabled("webview2.0") ){
+		if(!checkEngineEx("webview2.0") || !checkIfEngineExEnabled("webview2.0") ){
 			return;
 		}
 		
@@ -158,7 +157,7 @@ public class FileWriter {
 	
 	public void writeNotifJSONFile() throws IOException
 	{
-		if(!DownloadEngineEx.checkEngineEx("localnotifications")){
+		if(!checkEngineEx("localnotifications")){
 			return;
 		}
 		
@@ -181,12 +180,22 @@ public class FileWriter {
 		FileReader.jsonNotifString = notifjson.toString();
 		FileHelper.writeStringToFile(Locations.getPath(datafolderlocation) + "notif.json", FileReader.jsonNotifString);
 		
-		if(!DownloadEngineEx.checkEngineEx("localnotifications") || !DownloadEngineEx.checkIfEnabled("localnotifications") ){
+		if(!checkEngineEx("localnotifications") || !checkIfEngineExEnabled("localnotifications") ){
 			return;
 		}
 		
 		String assetsDataDir = Locations.getPath(projectDir, "Assets/data/com.byrobingames.manager");
 		
 		FileHelper.writeStringToFile(Locations.getPath(assetsDataDir) + "notif.json", FileReader.jsonNotifString);
+	}
+	
+	private boolean checkEngineEx(String id)
+	{
+		return SW.get().getEngineExtensionManager().getExtensions().containsKey(id);
+	}
+	
+	private boolean checkIfEngineExEnabled(String id)
+	{
+		return SW.get().getEngineExtensionManager().isEnabled(id);
 	}
 }

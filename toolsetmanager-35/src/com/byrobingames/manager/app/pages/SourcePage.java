@@ -10,8 +10,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.byrobingames.manager.utils.DownloadEngineEx;
-
 import misc.Version;
 import stencyl.core.lib.Game;
 import stencyl.sw.SW;
@@ -19,6 +17,7 @@ import stencyl.sw.app.App;
 import stencyl.sw.editors.game.advanced.EngineExtension;
 import stencyl.sw.editors.game.advanced.EngineExtensionManager;
 import stencyl.sw.ext.ExtensionDependencyManager;
+import stencyl.sw.ext.net.ExtensionRepositoryBrowser;
 import stencyl.sw.lnf.Theme;
 import stencyl.sw.util.Loader;
 import stencyl.sw.util.comp.CapsuleButton;
@@ -89,7 +88,7 @@ public class SourcePage extends JPanel{
 		
 		wrapper.setBackground(Theme.LIGHT_BG_COLOR3);
 		
-		if(DownloadEngineEx.checkEngineEx(REPOS_ID)){
+		if(SW.get().getEngineExtensionManager().getExtensions().containsKey(REPOS_ID)){
 			JPanel buttons = new JPanel();
 			buttons.setOpaque(false);
 			
@@ -185,7 +184,7 @@ public class SourcePage extends JPanel{
 						@Override
 						public void actionPerformed(ActionEvent evt)
 						{
-							DownloadEngineEx.downloadEngineEx(EXTEN_NAME,REPOS_ID);
+							new ExtensionRepositoryBrowser(false);
 						}
 					}
 			);

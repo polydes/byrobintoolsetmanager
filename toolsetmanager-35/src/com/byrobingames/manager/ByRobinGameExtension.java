@@ -10,16 +10,9 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 import com.byrobingames.manager.app.Main;
-import com.byrobingames.manager.reader.FileReader;
-import com.byrobingames.manager.reader.ReadGithubApi;
-import com.byrobingames.manager.utils.DownloadEngineEx;
-import com.byrobingames.manager.utils.UpdateToolset;
-import com.byrobingames.manager.utils.dialog.DialogBox;
-import com.byrobingames.manager.writer.FileWriter;
-
-import misc.Version;
-
 import com.byrobingames.manager.editor.NotifElement;
+import com.byrobingames.manager.reader.FileReader;
+import com.byrobingames.manager.writer.FileWriter;
 
 import stencyl.core.lib.Game;
 import stencyl.sw.ext.GameExtension;
@@ -182,13 +175,6 @@ public class ByRobinGameExtension extends GameExtension
 	public void onGameBuild(Game game)
 	{
 		if(Main._instance != null ){
-			if(!DownloadEngineEx.checkByRobinEngineEx()){
-			
-				//downloading byRobin Engine Extension Manager
-				log.info("byRobinExtension : downloding byrobin engine extension manager ");
-				return;
-			}
-
 			try {
 				Main.get().writeBuildFiles();
 			} catch (IOException e) {
