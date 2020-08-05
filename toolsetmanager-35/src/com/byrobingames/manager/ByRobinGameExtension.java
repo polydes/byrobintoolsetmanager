@@ -154,8 +154,6 @@ public class ByRobinGameExtension extends GameExtension
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		updateToolset();
 	}
 
 	/*
@@ -385,36 +383,5 @@ public class ByRobinGameExtension extends GameExtension
 		VUIOSAPPID = readStringGameProp("VUIOSAPPID","");
 		VUANDROIDAPPID = readStringGameProp("VUANDROIDAPPID","");
 		
-	}
-	
-	public void updateToolset(){
-		log.info("byRobinExtension : Updating from version " + getManifest().internalVersion + " for Game " + getGame().getName());
-		final String name ="byRobin Extension Manager (Stencyl 3.5)";
-		
-		String versionString = Integer.toString(getManifest().internalVersion);
-		
-		Version toolsetVersion = new Version(versionString);
-		
-		if(ReadGithubApi.checkVersion("byrobintoolsetmanager",toolsetVersion)){
-			Runnable mainTask = new Runnable() {
-			    public void run() {
-			    	DialogBox.showErrorDialog("", "Update available", 
-			    			"<html>There is an update available for " + name + ". <br>"
-		    						+ "Do you want to update the Toolset now?.</html>", 
-			    			true
-			    			);
-			    }
-			};
-			Runnable onFinish = new Runnable() {
-			    public void run() {
-			    	if(DialogBox.okIsPressed){
-			    		DialogBox.okIsPressed = false;
-			    		
-			    		UpdateToolset.downloadToolset(name);
-			    	}
-			    }
-			};
-			ByRobinGameExtension.doLongTask(mainTask, onFinish);
-		}
 	}
 }

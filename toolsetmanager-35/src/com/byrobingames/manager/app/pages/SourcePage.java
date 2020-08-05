@@ -96,13 +96,6 @@ public class SourcePage extends JPanel{
 		
 		wrapper.setBackground(Theme.LIGHT_BG_COLOR3);
 		
-		////Check if foldername contains master, if so rename the folder...
-		String masterFolder = REPOS_ID +"-master";
-		if(DownloadEngineEx.checkEngineEx(masterFolder)){
-			UpdateToolset.renameExFolder(REPOS_ID);
-		}
-		/////
-		
 		if(DownloadEngineEx.checkEngineEx(REPOS_ID)){
 			JPanel buttons = new JPanel();
 			buttons.setOpaque(false);
@@ -189,47 +182,6 @@ public class SourcePage extends JPanel{
 				}
 			);
 			
-			CapsuleButton update= null;
-			if(ReadGithubApi.checkVersion(e.getID(),e.getVersion())){
-				update = new CapsuleButton();
-				update.setText("Update");
-				update.useRedTheme();
-				update.addActionListener
-				(
-					new ActionListener()
-					{
-						@Override
-						public void actionPerformed(ActionEvent evt)
-						{
-							DownloadEngineEx.downloadEngineEx(EXTEN_NAME,REPOS_ID);
-						}
-					}
-				);
-				if(askForUpdate){
-					Runnable mainTask = new Runnable() {
-					    public void run() {
-					    		DialogBox.showGenericDialog(
-					    				"Update available", 
-					    				"<html>There is an update available for " + EXTEN_NAME + ". <br>Use the \"Update\" button to download and install the new Version.</html>");
-					    }
-					};
-					Runnable onFinish = new Runnable() {
-					    public void run() {
-					    	//log.info("byRobinGameExtension : ReadXML done run: ");
-					    	askForUpdate = false;
-					    }
-					};
-					ByRobinGameExtension.doLongTask(mainTask, onFinish);
-				}
-			}
-			
-			if(update != null){
-				Dimension d2 = new Dimension(650, 32);
-				wrapper.setPreferredSize(d2);
-				wrapper.setMinimumSize(d2);
-				wrapper.setMaximumSize(d2);
-				buttons.add(update);
-			}
 			buttons.add(website);
 			buttons.add(enable);
 			wrapper.add(buttons,BorderLayout.EAST);
