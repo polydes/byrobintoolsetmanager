@@ -4,30 +4,23 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.byrobingames.manager.ByRobinGameExtension;
-import com.byrobingames.manager.reader.ReadGithubApi;
 import com.byrobingames.manager.utils.DownloadEngineEx;
-import com.byrobingames.manager.utils.UpdateToolset;
-import com.byrobingames.manager.utils.dialog.DialogBox;
 
 import misc.Version;
 import stencyl.core.lib.Game;
 import stencyl.sw.SW;
 import stencyl.sw.app.App;
 import stencyl.sw.editors.game.advanced.EngineExtension;
-import stencyl.sw.editors.game.advanced.ExtensionInstance;
+import stencyl.sw.editors.game.advanced.EngineExtensionManager;
+import stencyl.sw.ext.ExtensionDependencyManager;
 import stencyl.sw.lnf.Theme;
-import stencyl.sw.util.FileHelper;
 import stencyl.sw.util.Loader;
-import stencyl.sw.util.Locations;
 import stencyl.sw.util.comp.CapsuleButton;
 import stencyl.sw.util.dg.DialogPanel;
 
@@ -100,18 +93,11 @@ public class SourcePage extends JPanel{
 			JPanel buttons = new JPanel();
 			buttons.setOpaque(false);
 			
-			
-			final File engineExRootFile = new File(Locations.getGameExtensionLocation(REPOS_ID));
-			String path = engineExRootFile.getAbsolutePath();
-			e = new EngineExtension(REPOS_ID,path);
-			e.load();
+			e = SW.get().getEngineExtensionManager().getExtensions().get(REPOS_ID);
 			exVersion = e.getVersion();
 			
-			if(Game.getGame().getExtensions().get(e.getID()) == null)
-			{
-				Game.getGame().getExtensions().put(e.getID(), new ExtensionInstance(e.getID(), false));
-			}
-			final ExtensionInstance inst = Game.getGame().getExtensions().get(e.getID());
+			EngineExtensionManager engineExts = SW.get().getEngineExtensionManager();
+			ExtensionDependencyManager deps = SW.get().getExtensionDependencyManager();
 			
 			ImageIcon icon = e.getIcon();
 			
@@ -130,7 +116,7 @@ public class SourcePage extends JPanel{
 			
 			final CapsuleButton enable = new CapsuleButton();
 			
-			if(inst.isEnabled())
+			if(engineExts.isEnabled(REPOS_ID))
 			{
 				enable.useRedTheme();
 			}
@@ -140,7 +126,7 @@ public class SourcePage extends JPanel{
 				enable.useGreenTheme();
 			}
 			
-			enable.setText(inst.isEnabled() ? "Disable" : "Enable");
+			enable.setText(engineExts.isEnabled(REPOS_ID) ? "Disable" : "Enable");
 			enable.addActionListener
 			(
 				new ActionListener()
@@ -148,22 +134,19 @@ public class SourcePage extends JPanel{
 					@Override
 					public void actionPerformed(ActionEvent evt)
 					{
-						inst.toggle();
-						
-						enable.setText(inst.isEnabled() ? "Disable" : "Enable");
-						
-						if(inst.isEnabled())
+						if(engineExts.isEnabled(REPOS_ID))
 						{
-							enable.useRedTheme();
-							SW.get().getEngineExtensionManager().enableExtension(e.getID());
-							SW.get().getExtensionDependencyManager().enable(inst.getExtension());
+							engineExts.disableExtension(REPOS_ID);
+							deps.disable(e);
+							enable.setText("Enable");
+							enable.useGreenTheme();
 						}
-						
 						else
 						{
-							enable.useGreenTheme();
-							SW.get().getEngineExtensionManager().disableExtension(e.getID());
-							SW.get().getExtensionDependencyManager().disable(inst.getExtension());
+							engineExts.enableExtension(REPOS_ID);
+							deps.enable(e);
+							enable.setText("Disable");
+							enable.useRedTheme();
 						}
 					}
 				}
