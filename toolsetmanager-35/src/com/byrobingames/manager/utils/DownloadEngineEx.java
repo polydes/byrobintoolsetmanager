@@ -55,15 +55,9 @@ public final class DownloadEngineEx {
 		
 	}
 	
-	public static boolean checkEngineEx(String extensionID){
-		
-		File engineEx = new File(Locations.getGameExtensionsLocation() + extensionID);
-		
-		if(engineEx.exists()){
-			return true;
-		}
-		
-		return false;
+	public static boolean checkEngineEx(String extensionID)
+	{
+		return SW.get().getEngineExtensionManager().getExtensions().containsKey(extensionID);
 	}
 	
 	public static void downloadEngineEx(String ext_name, String repos_id)
