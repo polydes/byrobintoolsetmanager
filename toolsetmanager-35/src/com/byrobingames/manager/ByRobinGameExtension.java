@@ -155,32 +155,28 @@ public class ByRobinGameExtension extends GameExtension
 	@Override
 	public void onGameWithDataSaved()
 	{
-		if(Main._instance != null ){
-			log.info("byRobinExtension : Saved Game " + getGame().getName());
-			Main.get().gameSaved();
-		
-			writeDataToPref();
-		
-			try {
-				new FileWriter(getGame()).writeWebViewHTMLFile();
-				new FileWriter(getGame()).writeNotifJSONFile();
-			} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			}
+		log.info("byRobinExtension : Saved Game " + getGame().getName());
+		Main.get().gameSaved();
+	
+		writeDataToPref();
+	
+		try {
+			new FileWriter(getGame()).writeWebViewHTMLFile();
+			new FileWriter(getGame()).writeNotifJSONFile();
+		} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
 		}
 	}
 	
 	@Override
 	public void onGameBuild(Game game)
 	{
-		if(Main._instance != null ){
-			try {
-				Main.get().writeBuildFiles();
-			} catch (IOException e) {
-				e.printStackTrace();
-				log.info("byRobinExtension : writeHxFile " + e);
-			}
+		try {
+			Main.get().writeBuildFiles();
+		} catch (IOException e) {
+			e.printStackTrace();
+			log.info("byRobinExtension : writeHxFile " + e);
 		}
 	}
 
