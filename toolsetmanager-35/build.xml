@@ -35,9 +35,8 @@
 	<property name="internalVersion" value="8" />
 	<property name="version" value="0.1.0" />
 	
-	<!-- Set "repository" if this extension is part of a third-party repository where it can be updated.
-	<property name="repository" value="http://www.polydes.com/repo" />
-	-->
+	<!-- Set "repository" if this extension is part of a third-party repository where it can be updated. -->
+	<property name="repository" value="http://www.polydes.com/byrobingames" />
 	
 	<include file="build-helper.xml" as="helper" />
 	
