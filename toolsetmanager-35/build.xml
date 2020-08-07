@@ -17,7 +17,7 @@
 	<property name="main" value="com.byrobingames.manager.ByRobinGameExtension" />
 	<property name="type" value="game" />
 	
-	<property name="dependsOn" value="engine-byrobinextensionmanager-0.1.8,stencyl-3.5.0,java-1.8" />
+	<property name="dependsOn" value="engine-byRobinextensionmanager-0.1.8,stencyl-3.5.0,java-1.8" />
 		
 	
 	<!-- Set "dependsOn" if this extensions depends on other extensions.
