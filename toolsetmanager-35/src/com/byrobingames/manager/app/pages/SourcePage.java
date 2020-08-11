@@ -185,6 +185,7 @@ public class SourcePage extends JPanel{
 						public void actionPerformed(ActionEvent evt)
 						{
 							new ExtensionRepositoryBrowser(false);
+							updateWrapper();
 						}
 					}
 			);
