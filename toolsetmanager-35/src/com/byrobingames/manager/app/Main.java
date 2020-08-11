@@ -508,7 +508,9 @@ public class Main extends JPanel
 			FileHelper.unzip(downloadDestination, namedFrameworkCache.getParentFile());
 		}
 		
-		File namedFramework = new File(Locations.getGameExtensionLocation(extensionID), getPath("frameworks", name));
+		File namedFrameworksDir = new File(Locations.getGameExtensionLocation(extensionID), "frameworks");
+		namedFrameworksDir.mkdirs();
+		File namedFramework = new File(namedFrameworksDir, name);
 		
 		Path link = namedFramework.toPath();
 		Path linkTo = namedFrameworkCache.toPath();
@@ -562,6 +564,7 @@ public class Main extends JPanel
 		
 		if(!output.exists())
 		{
+			FileHelper.makeFileExecutable(buildFile, true);
 			Util.buildCommand(buildFile.getAbsolutePath())
 				.environment(Haxe.getStencylEnvironment())
 				.workingDir(buildFile.getParentFile())
