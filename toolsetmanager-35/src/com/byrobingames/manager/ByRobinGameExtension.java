@@ -172,11 +172,15 @@ public class ByRobinGameExtension extends GameExtension
 	@Override
 	public void onGameBuild(Game game)
 	{
-		try {
-			Main.get().writeBuildFiles();
-		} catch (IOException e) {
-			e.printStackTrace();
-			log.info("byRobinExtension : writeHxFile " + e);
+		//XXX: Is our need to check for this within a GameExtension not a bug?
+		if(this.getGame() != null)
+		{
+			try {
+				Main.get().writeBuildFiles();
+			} catch (IOException e) {
+				e.printStackTrace();
+				log.info("byRobinExtension : writeHxFile " + e);
+			}
 		}
 	}
 
