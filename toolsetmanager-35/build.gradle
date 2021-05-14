@@ -1,0 +1,80 @@
+plugins {
+	id 'eclipse'
+	id 'java-library'
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(16))
+    }
+}
+
+group = 'com.byrobingames'
+version = rootProject.file('version.txt').text.trim()
+
+sourceSets {
+	main {
+	    java {
+            srcDir 'src'
+        }
+        resources {
+        	srcDir 'src'
+        	excludes = ["**/*.java"]
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        allowInsecureProtocol true
+        url "http://www.stencyl.com/dl/maven2/releases"
+    }
+    maven {
+        allowInsecureProtocol true
+        url "http://www.stencyl.com/dl/maven2/snapshots"
+    }
+}
+
+dependencies {
+    //Stencyl and its dependencies
+    compileOnly group: 'com.stencyl',        name: 'stencyl',        version: '4.1.0-SNAPSHOT'
+    compileOnly group: 'com.stencyl',        name: 'jide-oss',       version: '3.7.11.1'
+    compileOnly group: 'com.stencyl',        name: 'jide-grids',     version: '2.2.12.1'
+    compileOnly group: 'org.apache.commons', name: 'commons-lang3',  version: '3.3.2'
+	compileOnly group: 'log4j',              name: 'log4j',          version: '1.2.17'
+    compileOnly group: 'commons-io',         name: 'commons-io',     version: '2.4'
+    compileOnly group: 'org.json',           name: 'json',           version: '20150729'
+}
+
+jar {
+	from {
+		configurations.runtimeClasspath.collect { zipTree(it) }
+	}
+    manifest {
+		attributes(
+			"Extension-ID": "com.byrobingames.manager",
+			"Extension-Main-Class": "com.byrobingames.manager.ByRobinGameExtension",
+			"Extension-Version": version,
+			"Extension-Icon": "com/byrobingames/manager/res/images/icon.png",
+			"Extension-Dependencies": "engine-byRobinextensionmanager-0.1.8,stencyl-4.1.0-b10660",
+			"Extension-Type": "game",
+			"Extension-Name": "byRobin Extension Manager",
+			"Extension-Description": "Manage byRobin Engine Extensions.",
+			"Extension-Author": "Robin Schaafsma",
+			"Extension-Website": "https://byrobingames.github.io",
+			"Extension-Repository": "http://www.polydes.com/byrobingames",
+			"Extension-Internal-Version": "8"
+		)
+	}
+}
+
+tasks.register('installToolsetToWorkspace', Copy) {
+    from(tasks.named("jar"))
+	into stencylWorkspace+"/extensions"
+	rename { fileName -> "com.byrobingames.manager.jar" }
+}
+
+tasks.register('installToWorkspace') {
+	dependsOn 'installToolsetToWorkspace'
+}
