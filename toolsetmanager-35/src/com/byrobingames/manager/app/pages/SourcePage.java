@@ -15,7 +15,7 @@ import stencyl.core.lib.Game;
 import stencyl.sw.SW;
 import stencyl.sw.app.App;
 import stencyl.sw.editors.game.advanced.EngineExtension;
-import stencyl.sw.editors.game.advanced.EngineExtensionManager;
+import stencyl.sw.editors.game.advanced.ExtensionInstanceManager;
 import stencyl.sw.ext.ExtensionDependencyManager;
 import stencyl.sw.ext.net.ExtensionRepositoryBrowser;
 import stencyl.sw.lnf.Theme;
@@ -95,8 +95,8 @@ public class SourcePage extends JPanel{
 			e = SW.get().getEngineExtensionManager().getExtensions().get(REPOS_ID);
 			exVersion = e.getVersion();
 			
-			EngineExtensionManager engineExts = SW.get().getEngineExtensionManager();
 			ExtensionDependencyManager deps = SW.get().getExtensionDependencyManager();
+			ExtensionInstanceManager extInsts = Game.getGame().getExtensionManager();
 			
 			ImageIcon icon = e.getIcon();
 			
@@ -115,7 +115,7 @@ public class SourcePage extends JPanel{
 			
 			final CapsuleButton enable = new CapsuleButton();
 			
-			if(engineExts.isEnabled(REPOS_ID))
+			if(extInsts.isEnabled(REPOS_ID))
 			{
 				enable.useRedTheme();
 			}
@@ -125,7 +125,7 @@ public class SourcePage extends JPanel{
 				enable.useGreenTheme();
 			}
 			
-			enable.setText(engineExts.isEnabled(REPOS_ID) ? "Disable" : "Enable");
+			enable.setText(extInsts.isEnabled(REPOS_ID) ? "Disable" : "Enable");
 			enable.addActionListener
 			(
 				new ActionListener()
@@ -133,16 +133,16 @@ public class SourcePage extends JPanel{
 					@Override
 					public void actionPerformed(ActionEvent evt)
 					{
-						if(engineExts.isEnabled(REPOS_ID))
+						if(extInsts.isEnabled(REPOS_ID))
 						{
-							engineExts.disableExtension(REPOS_ID);
+							extInsts.disableExtension(REPOS_ID);
 							deps.disable(e);
 							enable.setText("Enable");
 							enable.useGreenTheme();
 						}
 						else
 						{
-							engineExts.enableExtension(REPOS_ID);
+							extInsts.enableExtension(REPOS_ID);
 							deps.enable(e);
 							enable.setText("Disable");
 							enable.useRedTheme();

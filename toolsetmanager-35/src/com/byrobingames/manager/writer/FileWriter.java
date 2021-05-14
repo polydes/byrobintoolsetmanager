@@ -196,6 +196,6 @@ public class FileWriter {
 	
 	private boolean checkIfEngineExEnabled(String id)
 	{
-		return SW.get().getEngineExtensionManager().isEnabled(id);
+		return Game.getGame().getExtensionManager().isEnabled(id);
 	}
 }

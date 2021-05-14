@@ -25,7 +25,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
@@ -51,7 +50,6 @@ import pulpcore.net.Download;
 import stencyl.core.lib.Game;
 import stencyl.sw.SW;
 import stencyl.sw.app.tasks.buildgame.GameBuilder;
-import stencyl.sw.editors.game.advanced.EngineExtensionManager;
 import stencyl.sw.editors.game.advanced.ExtensionInstance;
 import stencyl.sw.lnf.Theme;
 import stencyl.sw.loc.LanguagePack;
@@ -417,17 +415,14 @@ public class Main extends JPanel
 	{
 		BuildConfig buildConfig = getRunningBuildConfig();
 		
-		for(ExtensionInstance inst : Game.getGame().getExtensions().values())
+		for(ExtensionInstance inst : Game.getGame().getExtensionManager().getLoadedEnabledExtensionInstances())
 		{
-			if(inst.isEnabled())
+			File extensionRoot = new File(Locations.getGameExtensionLocation(inst.getExtensionID()));
+			File dependencies = new File(extensionRoot, "brg-dependencies.xml");
+			if(dependencies.exists())
 			{
-				File extensionRoot = new File(Locations.getGameExtensionLocation(inst.getExtensionID()));
-				File dependencies = new File(extensionRoot, "brg-dependencies.xml");
-				if(dependencies.exists())
-				{
-					Element deps = FileHelper.readXMLFromFile(dependencies).getDocumentElement();
-					resolveDependencies(deps.getChildNodes(), inst.getExtensionID(), buildConfig);
-				}
+				Element deps = FileHelper.readXMLFromFile(dependencies).getDocumentElement();
+				resolveDependencies(deps.getChildNodes(), inst.getExtensionID(), buildConfig);
 			}
 		}
 		
