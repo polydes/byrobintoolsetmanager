@@ -415,7 +415,7 @@ public class Main extends JPanel
 	{
 		BuildConfig buildConfig = getRunningBuildConfig();
 		
-		for(ExtensionInstance inst : Game.getGame().getExtensionManager().getLoadedEnabledExtensionInstances())
+		for(ExtensionInstance inst : Game.getGame().getExtensionManager().getLoadedEnabledExtensions().values())
 		{
 			File extensionRoot = new File(Locations.getGameExtensionLocation(inst.getExtensionID()));
 			File dependencies = new File(extensionRoot, "brg-dependencies.xml");
