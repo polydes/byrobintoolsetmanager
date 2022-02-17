@@ -27,24 +27,24 @@ sourceSets {
 repositories {
     mavenCentral()
     maven {
-        allowInsecureProtocol true
-        url "http://www.stencyl.com/dl/maven2/releases"
+        url "https://www.stencyl.com/dl/maven2/releases"
     }
     maven {
-        allowInsecureProtocol true
-        url "http://www.stencyl.com/dl/maven2/snapshots"
+        url "https://www.stencyl.com/dl/maven2/snapshots"
     }
 }
 
+def stencylVersion = '4.1.0-SNAPSHOT'
 dependencies {
-    //Stencyl and its dependencies
-    compileOnly group: 'com.stencyl',        name: 'stencyl',        version: '4.1.0-SNAPSHOT'
-    compileOnly group: 'com.stencyl',        name: 'jide-oss',       version: '3.7.11.1'
-    compileOnly group: 'com.stencyl',        name: 'jide-grids',     version: '2.2.12.1'
-    compileOnly group: 'org.apache.commons', name: 'commons-lang3',  version: '3.3.2'
-	compileOnly group: 'log4j',              name: 'log4j',          version: '1.2.17'
-    compileOnly group: 'commons-io',         name: 'commons-io',     version: '2.4'
-    compileOnly group: 'org.json',           name: 'json',           version: '20150729'
+	//Stencyl and its dependencies
+    api platform("com.stencyl:stencyl-platform:$stencylVersion")
+    compileOnly group: 'com.stencyl',        name: 'stencyl', version: stencylVersion
+    compileOnly group: 'com.stencyl',        name: 'jide-oss'
+    compileOnly group: 'com.stencyl',        name: 'jide-grids'
+    compileOnly group: 'org.apache.commons', name: 'commons-lang3'
+	compileOnly group: 'log4j',              name: 'log4j'
+    compileOnly group: 'commons-io',         name: 'commons-io'
+    compileOnly group: 'org.json',           name: 'json'
 }
 
 jar {
