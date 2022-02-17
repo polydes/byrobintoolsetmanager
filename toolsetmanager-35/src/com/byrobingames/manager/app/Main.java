@@ -561,7 +561,7 @@ public class Main extends JPanel
 		{
 			FileHelper.makeFileExecutable(buildFile, true);
 			Util.buildCommand(buildFile.getAbsolutePath())
-				.environment(Haxe.getStencylEnvironment())
+				.environment(Game.getGame().getHaxeEnvironment().getEnvironment())
 				.workingDir(buildFile.getParentFile())
 				.runAndWait();
 		}
