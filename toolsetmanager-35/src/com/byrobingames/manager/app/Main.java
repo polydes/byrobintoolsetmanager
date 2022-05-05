@@ -9,6 +9,11 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -46,7 +51,6 @@ import com.byrobingames.manager.app.pages.WebViewPage;
 import com.byrobingames.manager.res.Resources;
 import com.byrobingames.manager.writer.FileWriter;
 
-import pulpcore.net.Download;
 import stencyl.core.lib.Game;
 import stencyl.sw.SW;
 import stencyl.sw.app.tasks.buildgame.GameBuilder;
@@ -58,10 +62,11 @@ import stencyl.sw.util.FileHelper;
 import stencyl.sw.util.Locations;
 import stencyl.sw.util.ProgressBar;
 import stencyl.sw.util.ProgressDialog;
-import stencyl.sw.util.ProgressTracker;
-import stencyl.sw.util.Util;
 import stencyl.sw.util.dg.MessageDialog;
-import stencyl.sw.util.platform.haxe.Haxe;
+import stencyl.sw.util.net.NetHelper;
+import stencyl.sw.util.net.ProgressTrackerAdapter;
+import stencyl.util.ProcessHelper;
+import stencyl.util.ProgressTracker;
 
 public class Main extends JPanel
 {
@@ -414,7 +419,7 @@ public class Main extends JPanel
 	public void writeBuildFiles() throws IOException
 	{
 		BuildConfig buildConfig = getRunningBuildConfig();
-		
+
 		for(ExtensionInstance inst : Game.getGame().getExtensionManager().getLoadedEnabledExtensions().values())
 		{
 			File extensionRoot = new File(Locations.getGameExtensionLocation(inst.getExtensionID()));
@@ -545,34 +550,13 @@ public class Main extends JPanel
 			log.error(ex.getMessage(), ex);
 		}
 	}
-	
-	/*
-	 * Example:
-	 * 
-	 * <ndll buildfile="project/build" output="project/ndll/iPhone" />
-	 */
-	private void resolveNDLL(Element e, String extensionID, BuildConfig buildConfig)
-	{
-		File extensionFolder = new File(Locations.getGameExtensionLocation(extensionID));
-		File buildFile = new File(extensionFolder, e.getAttribute("buildfile"));
-		File output = new File(extensionFolder, e.getAttribute("output"));
-		
-		if(!output.exists())
-		{
-			FileHelper.makeFileExecutable(buildFile, true);
-			Util.buildCommand(buildFile.getAbsolutePath())
-				.environment(Game.getGame().getHaxeEnvironment().getEnvironment())
-				.workingDir(buildFile.getParentFile())
-				.runAndWait();
-		}
-	}
-	
+
 	//XXX: this is based on FileHelper.downloadFile for the purpose of allowing us to do this in a blocking manner.
 	public static void downloadFile(final String URL, final String name, final String errorMessage, final File destination, final LanguagePack lang)
 	{
 		downloadFile(URL, name, errorMessage, destination, lang, new ProgressDialog(SW.get(), lang.get("downloader.title", new String[] { name })));
 	}
-	
+
 	public static void downloadFile(final String URL, final String name, final String errorMessage, final File destination, final LanguagePack lang, final ProgressTracker dg)
 	{
 		log.debug(URL);
@@ -582,92 +566,53 @@ public class Main extends JPanel
 
 		SwingWorker<Integer, Void> worker = new SwingWorker<Integer, Void>()
 		{
-			int pct = 0;
-
 			@Override
-			public Integer doInBackground()
-			{
-				final Download d = Download.startDownload(URL);
-				pct = 0;
+			public Integer doInBackground() throws URISyntaxException {
+				HttpClient client = NetHelper.newClient();
+				var request = HttpRequest.newBuilder()
+						.uri(new URI(URL))
+						.GET().build();
+				var downloadHandler = HttpResponse.BodyHandlers.ofByteArray();
+				if(dg != null)
+				{
+					var tracker = new ProgressTrackerAdapter(dg);
+					downloadHandler = tracker.trackingDownload(downloadHandler);
+				}
 
 				if(dg != null)
 					dg.repaint();
 
-				try
-				{
-					Thread.sleep(50);
-				}
-
-				catch (InterruptedException e)
-				{
-					log.error(e.getMessage(), e);
-				}
-
-				Thread.yield();
-
-				SwingUtilities.invokeLater(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						if(dg != null)
-							dg.updateFile(1, 1, name);
-					}
+				SwingUtilities.invokeLater(() -> {
+					if(dg != null)
+						dg.updateFile(1, 1, name);
 				});
 
-				while (d.getState() != Download.SUCCESS)
+				HttpResponse<byte[]> response;
+
+				try
 				{
-					int newpct = (int) Math.floor(ProgressBar.PRECISION * d.getPercentDownloaded());
+					response = client.send(request, downloadHandler);
+				}
+				catch(InterruptedException ex)
+				{
+					log.info("Download canceled.");
+					if(dg != null)
+						dg.setVisible(false);
+					cancel(true);
 
-					if (newpct > pct)
-					{
-						SwingUtilities.invokeLater(new Runnable()
-						{
-							@Override
-							public void run()
-							{
-								if(dg != null)
-								{
-									dg.updateFileSize(d.getBytesRead() / 1024, d.getSize() / 1024, d.getEstimatedTimeRemaining());
+					return -1;
+				}
+				catch(IOException ex)
+				{
+					//Throw an error dialog.
+					log.error("Download failed.");
+					if(dg != null)
+						dg.setVisible(false);
+					cancel(true);
 
-									dg.update(ProgressBar.PRECISION * d.getPercentDownloaded());
-								}
-							}
-						});
-					}
+					SwingUtilities.invokeLater(() -> MessageDialog.showErrorDialog(lang.get("globals.error"), errorMessage));
 
-					pct = newpct;
-
-					if (d.getState() == Download.ERROR)
-					{
-						//Throw an error dialog.
-						log.error("Download failed.");
-						if(dg != null)
-							dg.setVisible(false);
-						cancel(true);
-
-						SwingUtilities.invokeLater(new Runnable()
-						{
-							@Override
-							public void run()
-							{
-								MessageDialog.showErrorDialog(lang.get("globals.error"), errorMessage);
-							}
-						});
-
-						return -1;
-					}
-
-					try
-					{
-						Thread.sleep(100);
-					}
-
-					catch (InterruptedException e)
-					{
-						log.error(e.getMessage(), e);
-						cancel(true);
-					}
+					return -1;
 				}
 
 				try
@@ -675,7 +620,7 @@ public class Main extends JPanel
 					FileHelper.delete(destination);
 					destination.getParentFile().mkdirs();
 					log.debug("Saving downloaded file to: " + destination);
-					FileUtils.writeByteArrayToFile(destination, d.getData());
+					FileUtils.writeByteArrayToFile(destination, response.body());
 				}
 
 				catch (IOException e)
@@ -697,7 +642,7 @@ public class Main extends JPanel
 		};
 
 		worker.execute();
-		
+
 		while(!worker.isDone())
 		{
 			try
@@ -708,6 +653,27 @@ public class Main extends JPanel
 			{
 				log.error(e.getMessage(), e);
 			}
+		}
+	}
+
+	/*
+	 * Example:
+	 * 
+	 * <ndll buildfile="project/build" output="project/ndll/iPhone" />
+	 */
+	private void resolveNDLL(Element e, String extensionID, BuildConfig buildConfig)
+	{
+		File extensionFolder = new File(Locations.getGameExtensionLocation(extensionID));
+		File buildFile = new File(extensionFolder, e.getAttribute("buildfile"));
+		File output = new File(extensionFolder, e.getAttribute("output"));
+		
+		if(!output.exists())
+		{
+			FileHelper.makeFileExecutable(buildFile, true);
+			ProcessHelper.command(buildFile.getAbsolutePath())
+				.environment(Game.getGame().getHaxeEnvironment().getEnvironment())
+				.workingDir(buildFile.getParentFile().toPath())
+				.runAndWait(ProcessHelper.PRINT_ERRORS);
 		}
 	}
 }

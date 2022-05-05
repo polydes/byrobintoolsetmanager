@@ -5,7 +5,7 @@ plugins {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(16))
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
@@ -38,13 +38,14 @@ def stencylVersion = '4.1.0-SNAPSHOT'
 dependencies {
 	//Stencyl and its dependencies
     api platform("com.stencyl:stencyl-platform:$stencylVersion")
-    compileOnly group: 'com.stencyl',        name: 'stencyl', version: stencylVersion
+    compileOnly group: 'com.stencyl',        name: 'stencyl'
     compileOnly group: 'com.stencyl',        name: 'jide-oss'
     compileOnly group: 'com.stencyl',        name: 'jide-grids'
     compileOnly group: 'org.apache.commons', name: 'commons-lang3'
 	compileOnly group: 'log4j',              name: 'log4j'
     compileOnly group: 'commons-io',         name: 'commons-io'
     compileOnly group: 'org.json',           name: 'json'
+	compileOnly group: 'com.github.mizosoft.methanol', name: 'methanol'
 }
 
 jar {
@@ -57,7 +58,7 @@ jar {
 			"Extension-Main-Class": "com.byrobingames.manager.ByRobinGameExtension",
 			"Extension-Version": version,
 			"Extension-Icon": "com/byrobingames/manager/res/images/icon.png",
-			"Extension-Dependencies": "engine-byRobinextensionmanager-0.1.8,stencyl-4.1.0-b10700",
+			"Extension-Dependencies": "engine-byRobinextensionmanager-0.1.8,stencyl-4.1.0-b11000",
 			"Extension-Type": "game",
 			"Extension-Name": "byRobin Extension Manager",
 			"Extension-Description": "Manage byRobin Engine Extensions.",

@@ -10,7 +10,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import misc.Version;
 import stencyl.core.lib.Game;
 import stencyl.sw.SW;
 import stencyl.sw.app.App;
@@ -22,6 +21,7 @@ import stencyl.sw.lnf.Theme;
 import stencyl.sw.util.Loader;
 import stencyl.sw.util.comp.CapsuleButton;
 import stencyl.sw.util.dg.DialogPanel;
+import stencyl.util.Version;
 
 public class SourcePage extends JPanel{
 	

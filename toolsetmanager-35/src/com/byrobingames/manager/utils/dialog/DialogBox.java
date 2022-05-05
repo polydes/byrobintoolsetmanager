@@ -10,18 +10,15 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
-
 import stencyl.sw.SW;
 import stencyl.sw.app.TaskManager;
 import stencyl.sw.lnf.Theme;
-import stencyl.sw.loc.LanguagePack;
-import stencyl.sw.util.HTML;
 import stencyl.sw.util.Loader;
-import stencyl.sw.util.Util;
 import stencyl.sw.util.comp.ButtonBarFactory;
 import stencyl.sw.util.comp.GroupButton;
 import stencyl.sw.util.dg.StencylDialog;
+import stencyl.util.HTML;
+import stencyl.util.OS;
 
 public final class DialogBox extends StencylDialog
 	{    
@@ -87,12 +84,7 @@ public final class DialogBox extends StencylDialog
 			this.msg = msg;
 			this.smallMsg = smallMsg;
 			this.showCancelButton = showCancelButton;
-			
-			if(!Util.isMacOSX())
-			{
-				setBackground(Theme.EDITOR_BG_COLOR);
-			}
-			
+
 			add(buttonPanel = createButtonPanel(), BorderLayout.SOUTH);
 			add(createContentPanel(), BorderLayout.CENTER);
 			

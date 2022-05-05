@@ -18,7 +18,6 @@ import org.apache.log4j.Logger;
 
 import stencyl.sw.lnf.Theme;
 import stencyl.sw.loc.LanguagePack;
-import stencyl.sw.util.Util;
 import stencyl.sw.util.comp.ButtonBarFactory;
 import stencyl.sw.util.comp.GroupButton;
 import stencyl.sw.util.comp.text.AutoVerifyField;
@@ -66,11 +65,6 @@ public class NotifDialog extends StencylDialog implements FieldVerifier{
 		}
 		
 		add(createContentPanel(), BorderLayout.CENTER);
-
-		if(!Util.isMacOSX())
-		{
-			setBackground(Theme.APP_COLOR);
-		}
 
 		setVisible(true);
 	}
