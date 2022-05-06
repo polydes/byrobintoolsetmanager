@@ -26,11 +26,6 @@ class ByRobinAssets
 	//StartApp
 	public static var SAIosAppID:String = "[SAIOSAPPID]";
 	public static var SAAndroidAppID:String = "[SAANDROIDAPPID]";
-	//Unityads
-	public static var UAIosGameID:String = "[UAIOSGAMEID]";
-	public static var UAAndroidGameID:String = "[UAANDROIDGAMEID]";
-	public static var UATestAds:Bool = [UATESTADS];
-	public static var UADebugMode:Bool = [UADEBUGMODE];
 	//Vungle
 	public static var VUIosAppID:String = "[VUIOSAPPID]";
 	public static var VUAndroidAppID:String = "[VUANDROIDAPPID]";

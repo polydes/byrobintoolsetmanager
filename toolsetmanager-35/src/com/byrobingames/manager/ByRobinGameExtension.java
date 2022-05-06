@@ -49,11 +49,6 @@ public class ByRobinGameExtension extends GameExtension
 	//startapp
 	public static String SAIOSAPPID;
 	public static String SAANDROIDAPPID;
-	//unityads
-	public static String UAIOSGAMEID;
-	public static String UAANDROIDGAMEID;
-	public static boolean UATESTADS = false;
-	public static boolean UADEBUGMODE = false;
 	//vungle
 	public static String VUIOSAPPID;
 	public static String VUANDROIDAPPID;
@@ -300,12 +295,6 @@ public class ByRobinGameExtension extends GameExtension
 		putGameProp("SAIOSAPPID", SAIOSAPPID);
 		putGameProp("SAANDROIDAPPID", SAANDROIDAPPID);
 		
-		//UnityAds
-		putGameProp("UAIOSGAMEID", UAIOSGAMEID);
-		putGameProp("UAANDROIDGAMEID", UAANDROIDGAMEID);
-		putGameProp("UATESTADS", String.valueOf(UATESTADS));
-		putGameProp("UADEBUGMODE", String.valueOf(UADEBUGMODE));
-		
 		//Vungle
 		putGameProp("VUIOSAPPID", VUIOSAPPID);
 		putGameProp("VUANDROIDAPPID", VUANDROIDAPPID);
@@ -358,13 +347,7 @@ public class ByRobinGameExtension extends GameExtension
 		//startApp
 		SAIOSAPPID = readStringGameProp("SAIOSAPPID","");
 		SAANDROIDAPPID = readStringGameProp("SAANDROIDAPPID","");
-		
-		//unityads
-		UAIOSGAMEID = readStringGameProp("UAIOSGAMEID","");
-		UAANDROIDGAMEID  = readStringGameProp("UAANDROIDGAMEID","");
-		UATESTADS = Boolean.valueOf(readStringGameProp("UATESTADS",""));
-		UADEBUGMODE = Boolean.valueOf(readStringGameProp("UADEBUGMODE",""));
-		
+
 		//Vungle
 		VUIOSAPPID = readStringGameProp("VUIOSAPPID","");
 		VUANDROIDAPPID = readStringGameProp("VUANDROIDAPPID","");

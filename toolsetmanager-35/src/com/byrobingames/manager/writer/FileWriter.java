@@ -64,13 +64,7 @@ public class FileWriter {
 		//StartApp
 		s = s.replace("[SAIOSAPPID]", ByRobinGameExtension.SAIOSAPPID);
 		s = s.replace("[SAANDROIDAPPID]", ByRobinGameExtension.SAANDROIDAPPID);
-		
-		//UnityAds
-		s = s.replace("[UAIOSGAMEID]", ByRobinGameExtension.UAIOSGAMEID);
-		s = s.replace("[UAANDROIDGAMEID]", ByRobinGameExtension.UAANDROIDGAMEID);
-		s = s.replace("[UATESTADS]",  String.valueOf(ByRobinGameExtension.UATESTADS));
-		s = s.replace("[UADEBUGMODE]",  String.valueOf(ByRobinGameExtension.UADEBUGMODE));
-		
+
 		//Vungle
 		s = s.replace("[VUIOSAPPID]", ByRobinGameExtension.VUIOSAPPID);
 		s = s.replace("[VUANDROIDAPPID]", ByRobinGameExtension.VUANDROIDAPPID);

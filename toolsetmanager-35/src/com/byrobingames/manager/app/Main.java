@@ -45,7 +45,6 @@ import com.byrobingames.manager.app.pages.ReplayKitPage;
 import com.byrobingames.manager.app.pages.SimpleSharePage;
 import com.byrobingames.manager.app.pages.StartAppPage;
 import com.byrobingames.manager.app.pages.TapdaqPage;
-import com.byrobingames.manager.app.pages.UnityAdsPage;
 import com.byrobingames.manager.app.pages.VunglePage;
 import com.byrobingames.manager.app.pages.WebViewPage;
 import com.byrobingames.manager.res.Resources;
@@ -60,7 +59,6 @@ import stencyl.sw.loc.LanguagePack;
 import stencyl.sw.prefs.runconfigs.BuildConfig;
 import stencyl.sw.util.FileHelper;
 import stencyl.sw.util.Locations;
-import stencyl.sw.util.ProgressBar;
 import stencyl.sw.util.ProgressDialog;
 import stencyl.sw.util.dg.MessageDialog;
 import stencyl.sw.util.net.NetHelper;
@@ -89,7 +87,6 @@ public class Main extends JPanel
 	private JToggleButton replaykitButton;
 	private JToggleButton simpleshareButton;
 	private JToggleButton startappButton;
-	private JToggleButton unityadsButton;
 	private JToggleButton vungleButton;
 	private JToggleButton webviewButton;
 	
@@ -154,7 +151,6 @@ public class Main extends JPanel
 		simpleshareButton = createButton("SimpleShare", Resources.loadIcon("images/simpleshare.png"));
 		startappButton  = createButton("StartApp", Resources.loadIcon("images/startapp.png"));
 		tapdaqButton = createButton("Tapdaq", Resources.loadIcon("images/tapdaq.png"));
-		unityadsButton = createButton("UnityAds", Resources.loadIcon("images/unityads.png"));
 		vungleButton = createButton("Vungle", Resources.loadIcon("images/vungle.png"));
 		webviewButton = createButton("WebView", Resources.loadIcon("images/webview.png"));
 		
@@ -168,7 +164,6 @@ public class Main extends JPanel
 		buttonBar1.add(simpleshareButton);
 		buttonBar.add(startappButton);
 		buttonBar1.add(tapdaqButton);
-		buttonBar.add(unityadsButton);
 		buttonBar1.add(vungleButton);
 		buttonBar.add(webviewButton);
 		
@@ -295,11 +290,6 @@ public class Main extends JPanel
 			currentPage = TapdaqPage.get();			
 			tapdaqButton.setSelected(true);			
 		}
-		else if(pageName.equals("UnityAds"))
-		{
-			currentPage = UnityAdsPage.get();			
-			unityadsButton.setSelected(true);			
-		}
 		else if(pageName.equals("Vungle"))
 		{
 			currentPage = VunglePage.get();			
@@ -332,7 +322,6 @@ public class Main extends JPanel
 		SimpleSharePage.disposeInstance();
 		StartAppPage.disposeInstance();
 		TapdaqPage.disposeInstance();
-		UnityAdsPage.disposeInstance();
 		VunglePage.disposeInstance();
 		WebViewPage.disposeInstance();
 		
@@ -352,7 +341,6 @@ public class Main extends JPanel
 		SimpleSharePage.get().save();
 		StartAppPage.get().save();
 		TapdaqPage.get().save();
-		UnityAdsPage.get().save();
 		VunglePage.get().save();
 		WebViewPage.get().save();
 		
@@ -461,198 +449,11 @@ public class Main extends JPanel
 			case "section":
 				resolveDependencies(e.getChildNodes(), extensionID, buildConfig);
 				break;
-			case "framework":
-				resolveFramework(e, extensionID);
-				break;
 			case "ndll":
 				resolveNDLL(e, extensionID, buildConfig);
 				break;
 			default:
 				log.error("Unkown dependency type: " + e.getTagName());
-		}
-	}
-	
-	/*
-	 * Example:
-	 * 
-	 * <framework
-     *      name="UnityAds.framework"
-     *      version="3.2.0"
-     *      source="https://github.com/Unity-Technologies/unity-ads-ios/releases/download/3.2.0/UnityAds.framework.zip" />
-	 */
-	private void resolveFramework(Element e, String extensionID)
-	{
-		String name = e.getAttribute("name");
-		String version = e.getAttribute("version");
-		String source = e.getAttribute("source");
-		
-		//stencylworks/brg-frameworks
-		File frameworksCache = new File(Locations.getWorkspaceRoot(), "brg-frameworks");
-		
-		//stencylworks/brg-frameworks/UnityAds.framework/3.2.0/UnityAds.framework
-		File namedFrameworkCache = new File(frameworksCache, getPath(name, version, name));
-		if(!namedFrameworkCache.exists())
-		{
-			//UnityAds.framework.zip
-			String downloadFilename = source.substring(source.lastIndexOf("/") + 1);
-			//stencylworks/brg-frameworks/.cache/UnityAds.framework/3.2.0/UnityAds.framework.zip
-			File downloadDestination = new File(frameworksCache, getPath(".cache", name, version, downloadFilename));
-			
-			if(!downloadDestination.exists())
-			{
-				downloadFile(source, name, "Error downloading " + name, downloadDestination, LanguagePack.get());
-			}
-			
-			//saved .zip -> stencylworks/brg-frameworks/UnityAds.framework/3.2.0
-			namedFrameworkCache.getParentFile().mkdirs();
-			FileHelper.unzip(downloadDestination, namedFrameworkCache.getParentFile());
-		}
-		
-		File namedFrameworksDir = new File(Locations.getGameExtensionLocation(extensionID), "frameworks");
-		namedFrameworksDir.mkdirs();
-		File namedFramework = new File(namedFrameworksDir, name);
-		
-		Path link = namedFramework.toPath();
-		Path linkTo = namedFrameworkCache.toPath();
-		Path linkedPath = null;
-		if(Files.isSymbolicLink(link))
-		{
-			try
-			{
-				linkedPath = Files.readSymbolicLink(link);
-			}
-			catch (IOException ex)
-			{
-				log.error(ex.getMessage(), ex);
-			}
-		}
-		
-		try
-		{
-			if(linkedPath == null || !Files.isSameFile(linkedPath, linkTo))
-			{
-				if(namedFramework.exists())
-				{
-					namedFramework.delete();
-				}
-				try
-				{
-					Files.createSymbolicLink(link, linkTo);
-				}
-				catch (UnsupportedOperationException ex)
-				{
-					log.error(ex.getMessage(), ex);
-				}
-			}
-		}
-		catch (IOException ex)
-		{
-			log.error(ex.getMessage(), ex);
-		}
-	}
-
-	//XXX: this is based on FileHelper.downloadFile for the purpose of allowing us to do this in a blocking manner.
-	public static void downloadFile(final String URL, final String name, final String errorMessage, final File destination, final LanguagePack lang)
-	{
-		downloadFile(URL, name, errorMessage, destination, lang, new ProgressDialog(SW.get(), lang.get("downloader.title", new String[] { name })));
-	}
-
-	public static void downloadFile(final String URL, final String name, final String errorMessage, final File destination, final LanguagePack lang, final ProgressTracker dg)
-	{
-		log.debug(URL);
-
-		if(dg != null)
-			dg.setVisible(true);
-
-		SwingWorker<Integer, Void> worker = new SwingWorker<Integer, Void>()
-		{
-			@Override
-			public Integer doInBackground() throws URISyntaxException {
-				HttpClient client = NetHelper.newClient();
-				var request = HttpRequest.newBuilder()
-						.uri(new URI(URL))
-						.GET().build();
-				var downloadHandler = HttpResponse.BodyHandlers.ofByteArray();
-				if(dg != null)
-				{
-					var tracker = new ProgressTrackerAdapter(dg);
-					downloadHandler = tracker.trackingDownload(downloadHandler);
-				}
-
-				if(dg != null)
-					dg.repaint();
-
-				SwingUtilities.invokeLater(() -> {
-					if(dg != null)
-						dg.updateFile(1, 1, name);
-				});
-
-				HttpResponse<byte[]> response;
-
-				try
-				{
-					response = client.send(request, downloadHandler);
-				}
-				catch(InterruptedException ex)
-				{
-					log.info("Download canceled.");
-					if(dg != null)
-						dg.setVisible(false);
-					cancel(true);
-
-					return -1;
-				}
-				catch(IOException ex)
-				{
-					//Throw an error dialog.
-					log.error("Download failed.");
-					if(dg != null)
-						dg.setVisible(false);
-					cancel(true);
-
-					SwingUtilities.invokeLater(() -> MessageDialog.showErrorDialog(lang.get("globals.error"), errorMessage));
-
-					return -1;
-				}
-
-				try
-				{
-					FileHelper.delete(destination);
-					destination.getParentFile().mkdirs();
-					log.debug("Saving downloaded file to: " + destination);
-					FileUtils.writeByteArrayToFile(destination, response.body());
-				}
-
-				catch (IOException e)
-				{
-					log.error(e.getMessage(), e);
-					cancel(true);
-				}
-
-				return 0;
-			}
-
-			@Override
-			public void done()
-			{
-				super.done();
-				if(dg != null)
-					dg.dispose();
-			}
-		};
-
-		worker.execute();
-
-		while(!worker.isDone())
-		{
-			try
-			{
-				Thread.sleep(50);
-			}
-			catch (InterruptedException e)
-			{
-				log.error(e.getMessage(), e);
-			}
 		}
 	}
 
