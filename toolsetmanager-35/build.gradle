@@ -58,7 +58,7 @@ jar {
 			"Extension-Main-Class": "com.byrobingames.manager.ByRobinGameExtension",
 			"Extension-Version": version,
 			"Extension-Icon": "com/byrobingames/manager/res/images/icon.png",
-			"Extension-Dependencies": "engine-byRobinextensionmanager-0.1.8,stencyl-4.1.0-b11000",
+			"Extension-Dependencies": "engine-byRobinextensionmanager-0.2.7,stencyl-4.1.0-b11005",
 			"Extension-Type": "game",
 			"Extension-Name": "byRobin Extension Manager",
 			"Extension-Description": "Manage byRobin Engine Extensions.",
